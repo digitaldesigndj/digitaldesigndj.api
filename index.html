@@ -1,0 +1,19 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+$(function(){
+	var socket = io.connect('http://localhost:9779');
+	// socket.on('news', function (data) {
+	// 	console.log(data);
+	// 	socket.emit('my other event', { clientSaysWhat: '' });
+	// });
+	text_field = $('#text').select();
+	text_field.on('change',function(){
+		console.log( text_field.val() );
+		socket.emit('senttext', text_field.val() );
+		text_field.val("");
+	});
+});
+</script>
+The Voice of Taylor: 
+<input id="text" value="" />
