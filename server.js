@@ -11,16 +11,9 @@ app.get('/', function (req, res) {
 });
 
 io.sockets.on('connection', function (socket) {
-	// socket.emit('news', { hello: 'world', reading: 'rainbow' });
-	// socket.on('my other event', function (data) {
-	//   console.log(data);
-	// });
 	socket.on('senttext', function (data) {
 		console.log(data);
 		socket.broadcast.emit('news', { messageFromControl: data } );
 	});
 	socket.emit('news', { messageFromControl: 'server connected' } );
-	// socket.on('confirmation', function (data) {
-	// 	console.log('broadcast recieved');
-	// });
 });
