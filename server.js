@@ -5,6 +5,17 @@ var app = require('express')()
 	, io = require('socket.io').listen(server)
 	, port = 9779;
 
+// Twitter Setup
+var twitter = require('ntwitter');
+
+var twit = new twitter({
+	consumer_key: 'R96RyfVvpZu9JpbBtfrJzg'
+	, consumer_secret: '0O2YWco9k6dCkpO6vj2zIokpsmjUfdfRphV0UZ6as'
+	, access_token_key: '13287232-xZ7pAsI21qDFxoS26xPCrEBtw9aANUWxW4EZFNuez'
+	, access_token_secret: '7qrf1B6voo53duPpgOfFZ5obdgPhmscWelCV4eKAsE'
+});
+
+
 // configure /api here
 clientio.set('resource','/api/socket.io');
 console.log( '' )
@@ -33,4 +44,11 @@ io.sockets.on('connection', function (socket) {
 clientio.of('/api').on('connection', function (socket) {
 	console.log( 'client connected' );
 	socket.emit('news', { messageFromControl: 'connected' } );
+});
+
+twit.stream('statuses/sample', function(stream) {
+	stream.on('data', function (data) {
+		console.log(data);
+		clientio.sockets.emit('news', { twitter: data } );
+	});
 });
