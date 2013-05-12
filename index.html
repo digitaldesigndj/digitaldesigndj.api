@@ -2,12 +2,13 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
 $(function(){
-	var socket = io.connect('http://192.168.0.7:9779');
-	text_field = $('#text').select();
-	text_field.on('change',function(){
-		console.log( text_field.val() );
-		socket.emit('senttext', text_field.val() );
-		text_field.val("");
+	var socket     = io.connect('http://192.168.0.7:9779');
+	var text_field = $('#text').select();
+	var lastentry  = "";
+	text_field.keyup(function(event) {
+		if( text_field.val() != lastentry ) {
+			socket.emit('senttext', text_field.val() );
+		}
 	});
 });
 </script>
