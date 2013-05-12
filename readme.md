@@ -6,7 +6,8 @@ Right now, I am using this space for a sockets io exeriment.
 
 This code has been tightly linked to what I am doing in the /digitaldesigndj.com repo. The client side connection currently lives in that repo. `src/scripts/socket.js` and `<p id="broadcast"></p>`
 
-socket.js
+`socket.js`
+
 ```js
 $(function(){
 	var devsocket = io.connect('http://192.168.0.3:8880');
@@ -26,6 +27,8 @@ $(function(){
 
 I have a local interface `index.html` where I can type into a text field. Via sockets IO the text is delivered back to the server. Then the events are broadcast out on a public socket that digitaldesigndj.com subscribes to.
 
+`index.html`
+
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script>
@@ -44,17 +47,15 @@ I have a local interface `index.html` where I can type into a text field. Via so
 
 Sockets work in pure client side js, so for deployment on the internet I needed a way to create seperate sockets for publishing and broadcasting. (Otherwise risk hackers publishing to all visitors with a few lines in the web inspector console)
 
-Security and live publishing is the focus of this experiment so far.
-
 ### Sockets Server
-
-Admin Interface - Text field that uses sockets to push data
 
 Server - Takes data from private socket and pushes it out on public API
 
+`server.js`
+
 ```js
 var app = require('express')()
-	// Redirected with nginx to /api
+	// Port 8880 redirected with nginx to /api
 	, clientio = require('socket.io').listen(8880)
 	, server = require('http').createServer(app)
 	, io = require('socket.io').listen(server)
