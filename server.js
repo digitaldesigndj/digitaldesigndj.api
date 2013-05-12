@@ -1,4 +1,5 @@
 var app = require('express')()
+	, clientio = require('socket.io').listen(8880)
 	, server = require('http').createServer(app)
 	, io = require('socket.io').listen(server)
 	, port = 9779;
@@ -10,10 +11,17 @@ app.get('/', function (req, res) {
 	res.sendfile(__dirname + '/index.html');
 });
 
-io.sockets.on('connection', function (socket) {
-	socket.on('senttext', function (data) {
+io.sockets.on('connection', function (pub_socket) {
+	console.log( 'admin conneted' );
+	pub_socket.on('senttext', function (data) {
 		console.log(data);
-		socket.broadcast.emit('news', { messageFromControl: data } );
+		clientio.sockets.emit('news', { messageFromControl: data } );
 	});
-	socket.emit('news', { messageFromControl: 'server connected' } );
+	clientio.sockets.emit('news', { messageFromControl: 'publishing server connected' } );
 });
+
+clientio.sockets.on('connection', function (socket) {
+	console.log( 'client connected' );
+	socket.emit('news', { messageFromControl: 'connected to broadcast source' } );
+});
+
