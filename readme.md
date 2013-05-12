@@ -2,7 +2,13 @@
 
 Right now, I am using this space for a sockets io exeriment.
 
-Currently its a new feature on DigitalDesignDj.com where I can type into the local only text field and the events are sent to all connected clients on digitaldesigndj.com
+This code has been tightly linked to what I am doing in the /digitaldesigndj.com repo. The client side connection currently lives in that repo. `src/scripts/socket.js` and `<p id="broadcast"></p>`
+
+I have a local interface `index.html` where I can type into a text field. Via sockets IO the text is delivered back to the server. Then the events are broadcast out on a public socket that digitaldesigndj.com subscribes to.
+
+Sockets work in pure client side js, so for deployment on the internet I needed a way to create seperate sockets for publishing and broadcasting. (Otherwise risk hackers publishing to all visitors with a few lines in the web inspector console)
+
+Security and live publishing is the focus of this experiment so far.
 
 ### Sockets Server
 
