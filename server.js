@@ -4,6 +4,7 @@ var app = require('express')()
 	, io = require('socket.io').listen(server)
 	, port = 9779;
 
+clientio.set('resource','/api/socket.io');
 server.listen( port );
 console.log( 'server listening on port:' + port );
 
@@ -20,8 +21,8 @@ io.sockets.on('connection', function (pub_socket) {
 	clientio.sockets.emit('news', { messageFromControl: 'publishing server connected' } );
 });
 
-clientio.sockets.on('connection', function (socket) {
+clientio.of('/api').on('connection', function (socket) {
 	console.log( 'client connected' );
-	socket.emit('news', { messageFromControl: 'connected to broadcast source' } );
+	socket.emit('news', { messageFromControl: 'connected' } );
 });
 
