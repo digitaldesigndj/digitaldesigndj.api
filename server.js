@@ -15,6 +15,7 @@ var twit = new twitter({
 	, access_token_secret: '7qrf1B6voo53duPpgOfFZ5obdgPhmscWelCV4eKAsE'
 });
 
+var connectCounter = 0;
 
 // configure /api here
 clientio.set('resource','/api/socket.io');
@@ -43,12 +44,32 @@ io.sockets.on('connection', function (socket) {
 // of('/api') is an important gotcha
 clientio.of('/api').on('connection', function (socket) {
 	console.log( 'client connected' );
+	connectCounter++; console.log( 'client connected ' + connectCounter );
 	socket.emit('news', { messageFromControl: 'connected' } );
 });
 
-twit.stream('statuses/sample', function(stream) {
-	stream.on('data', function (data) {
-		console.log(data);
-		clientio.sockets.emit('news', { twitter: data } );
-	});
+clientio.of('/api').on('disconnection', function() { connectCounter--; console.log( 'client disconnected ' + connectCounter ); });
+
+// twit.stream('statuses/sample', function(stream) {
+// 	stream.on('data', function (data) {
+// 		// console.log(data);
+// 		clientio.sockets.emit('news', { messageFromControl: data } );
+// 	});
+// });
+
+twit.stream('user', {track:'BTtoronto'}, function(stream) {
+  stream.on('data', function (data) {
+    console.log(data);
+    clientio.sockets.emit('news', { messageFromControl: data.text } );
+  });
+  stream.on('end', function (response) {
+    // Handle a disconnection
+    console.log( 'disconnected');
+  });
+  stream.on('destroy', function (response) {
+    // Handle a 'silent' disconnection from Twitter, no end/error event fired
+    console.log( 'silent disconnect');
+  });
+  // Disconnect stream after five seconds
+  // setTimeout(stream.destroy, 5000);
 });
