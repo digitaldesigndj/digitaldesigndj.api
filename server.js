@@ -73,3 +73,29 @@ twit.stream('user', {track:'BTtoronto'}, function(stream) {
   // Disconnect stream after five seconds
   // setTimeout(stream.destroy, 5000);
 });
+
+var lastfm;
+var username       = "DigitalDesignDj";
+var lastfm_api_key = 'c7b66efb5c1869ed420b3275da989fab';
+var hb         = require('handlebars');
+var $          = require('jquery');
+var cronJob    = require('cron').CronJob;
+
+new cronJob('/4 * * * * *', function(){
+  console.log('Polling LastFM');
+  $.ajax({
+    url: 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + encodeURIComponent(username) + '&api_key=' + encodeURIComponent(lastfm_api_key) + '&format=json',
+    dataType: "json",
+    success: function(data) {
+      if (data) {
+        console.log(data);
+        if( data !== lastfm ){
+          lastfm = data;
+          clientio.sockets.emit('news', { lastfm: data } );
+        }
+      } else {
+        console.log(data);
+      }
+    }
+  });
+}, null, true, "America/Chicago");
