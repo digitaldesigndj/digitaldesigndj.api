@@ -1,8 +1,9 @@
 var app = require('express')()
 	// Redirected with nginx to /api
-	, clientio = require('socket.io').listen(8880)
+  , socketio = require('socket.io')
+	, clientio = socketio.listen(8880)
 	, server = require('http').createServer(app)
-	, io = require('socket.io').listen(server)
+	, io = socketio.listen(server)
 	, port = 9779;
 
 // Twitter Setup
@@ -44,11 +45,12 @@ io.sockets.on('connection', function (socket) {
 // of('/api') is an important gotcha
 clientio.of('/api').on('connection', function (socket) {
 	console.log( 'client connected' );
-	connectCounter++; console.log( 'client connected ' + connectCounter );
+	// connectCounter++; console.log( 'client connected ' + connectCounter );
 	socket.emit('news', { messageFromControl: 'connected' } );
+  pollLastFm();
 });
 
-clientio.of('/api').on('disconnection', function() { connectCounter--; console.log( 'client disconnected ' + connectCounter ); });
+// clientio.of('/api').on('disconnection', function() { connectCounter--; console.log( 'client disconnected ' + connectCounter ); });
 
 // twit.stream('statuses/sample', function(stream) {
 // 	stream.on('data', function (data) {
@@ -77,8 +79,8 @@ twit.stream('user', {track:'BTtoronto'}, function(stream) {
 var lastfm;
 var username       = "DigitalDesignDj";
 var lastfm_api_key = 'c7b66efb5c1869ed420b3275da989fab';
-var hb         = require('handlebars');
-var $          = require('jquery');
+var hb             = require('handlebars');
+var $              = require('jquery');
 
 function pollLastFm(){
   $.ajax({
@@ -86,10 +88,12 @@ function pollLastFm(){
     dataType: "json",
     success: function (data) {
       if (data) {
-        console.log(data);
+        // console.log(data);
         if( data !== lastfm ){
           lastfm = data;
-          clientio.sockets.emit('lastfm', { lastfm: data } );
+          console.log(lastfm);
+          //clientio.sockets.emit('news', { messageFromControl: lastfm. } );
+          clientio.sockets.emit('news', { messageFromControl: lastfm } );
         }
       } else {
         console.log(data);
@@ -98,11 +102,9 @@ function pollLastFm(){
   });
 }
 
-pollLastFm();
-
 var cronJob    = require('cron').CronJob;
 
-new cronJob('/4 * * * * *', function(){
+new cronJob('* * * * * *', function(){
   console.log('Polling LastFM');
   pollLastFm();
 }, null, true);
