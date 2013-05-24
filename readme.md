@@ -2,17 +2,42 @@
 
 Welcome,
 
-### Purpose of appilication
+This application polls LastFM every 5s and stores the result. If the currently playing song has changed, or the total play count increases, the data is sent to connected clients via socket io. The current dataset is also provided when a new connection is established.
+
+
+### How to make it go:
+
+You will need [NodeJs](http://nodejs.org/download/)
+
+1. Clone the repo
+
+	git clone https://github.com/digitaldesigndj/digitaldesigndj.api
+
+1. Go into the repo
+
+	cd digitaldesigndj.api
+
+1. Install Deps
+
+	npm install
+
+1. Start the server
+
+	node server.js
+
+1. Profit!
+
+	http://localhost:9779
+
+
+<!-- ### Purpose of appilication
 
 You should be able to see what I am listening to with Spotify in a live fashion. With a maximum 60s of delay.
 
 This app should poll lastfm every min and recieve a json array. When new clients connect to a websocket, the app will send the user the latest json. When the server is polled and the data changes, the update is sent to all clients.
 
 The current widget system on digitaldesigndj.com polls from the client side, if I got a rush of traffic, I would hit the rate limit for github and lastfm (Each client making thier own request.)
-
-### Post build
-
-The application polls LastFM every 5s and stores the result. If the currently playing song has changed, or the total play cound increases, the new data is send out via socket io. The current dataset is provided to anyone who connects to the server when the connection is established.
+ -->
 
 <!-- 
 ### Client Side
