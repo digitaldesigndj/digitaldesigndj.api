@@ -16,21 +16,26 @@ You will need [NodeJs](http://nodejs.org/download/)
 
 1. Clone the repo
 
+
 	git clone https://github.com/digitaldesigndj/digitaldesigndj.api
 
 1. Go into the repo
+
 
 	cd digitaldesigndj.api
 
 1. Install Deps
 
+
 	npm install
 
 1. Start the server
 
+
 	node server.js
 
 1. Profit!
+
 
 	http://localhost:9779
 
