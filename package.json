@@ -27,10 +27,9 @@
   "dependencies": {
     "express": "*",
     "socket.io": "*",
-    "ntwitter": "*",
-    "handlebars": "*",
     "jquery": "*",
-    "cron": "*"
+    "cron": "*",
+    "events": "*"
   },
   "devDependencies": {
     "docpad-plugin-livereload": "2.x"
