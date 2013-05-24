@@ -1,4 +1,6 @@
-var io               = require('socket.io').listen(8880)
+var app              = require('express')()
+	, server         = require('http').createServer(app)
+	, io             = require('socket.io').listen(server)
 	, events         = require('events')
 	, cronJob        = require('cron').CronJob
 	, $              = require('jquery')
@@ -11,8 +13,9 @@ var io               = require('socket.io').listen(8880)
 
 server.listen(9779);
 
-// configure /api here
-io.set('resource','/api/socket.io');
+app.get('/', function (req, res) {
+	res.sendfile(__dirname + '/index.html');
+});
 
 function pollLastFm(){
 	$.ajax({
@@ -47,6 +50,6 @@ new cronJob('*/5 * * * * *', function(){
 	pollLastFm();
 }, null, true);
 
-io.of('/api').on('connection', function (socket) {
+io.sockets.on('connection', function (socket) {
 	socket.emit('news', lastfm);
 });
