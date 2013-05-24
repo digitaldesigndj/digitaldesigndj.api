@@ -1,0 +1,39 @@
+{
+  "name": "digitaldesigndj.api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DigitalDesignDj.api Built with DocPad",
+  "homepage": "https://digitaldesigndj.api",
+  "keywords": [
+    "digitaldesigndj",
+    "docpad",
+    "website"
+  ],
+  "author": "Taylor Young <taylordyoung@gmail.com> (http://digitaldesigndj.com)",
+  "maintainers": [
+    "Taylor Young <taylordyoung@gmail.com> (http://digitaldesigndj.com)"
+  ],
+  "contributors": [
+    "Taylor Young <taylordyoung@gmail.com> (http://digitaldesigndj.com)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://DigitalDesignDj@bitbucket.org/DigitalDesignDj/digitaldesigndj.api.git"
+  },
+  "engines": {
+    "node": "0.10",
+    "npm": "1.2"
+  },
+  "dependencies": {
+    "express": "*",
+    "socket.io": "*",
+    "ntwitter": "*",
+    "handlebars": "*",
+    "jquery": "*",
+    "cron": "*"
+  },
+  "devDependencies": {
+    "docpad-plugin-livereload": "2.x"
+  },
+  "main": "node_modules/docpad/bin/docpad-server"
+}
