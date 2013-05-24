@@ -1,16 +1,7 @@
 ## DigitalDesignDj API
 
-Welcome,
+Right now, I am using this space for a sockets io exeriment.
 
-### Purpose of appilication
-
-You should be able to see what I am listening to with Spotify in a live fashion. With a maximum 60s of delay.
-
-This app should poll lastfm every min and recieve a json array. When new clients connect to a websocket, the app will send the user the latest json. When the server is polled and the data changes, the update is sent to all clients.
-
-The current widget system on digitaldesigndj.com polls from the client side, if I got a rush of traffic, I would hit the rate limit for github and lastfm (Each client making thier own request.)
-
-<!-- 
 ### Client Side
 
 This code has been tightly linked to what I am doing in the /digitaldesigndj.com repo. The client side connection currently lives in that repo. `src/scripts/socket.js` and `<p id="broadcast"></p>`
@@ -123,4 +114,3 @@ Using nginx:
 		error_page 404 /404.html;
 
 	}
- -->
