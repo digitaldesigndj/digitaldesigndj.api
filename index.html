@@ -1,8 +1,0 @@
-<script src="/socket.io/socket.io.js"></script>
-<script>
-	var socket = io.connect('http://localhost:9779');
-	socket.on('news', function (data) {
-		console.log(data);
-	});
-</script>
-Open the console, you should get a list of my most recently played tracks. If I am currently listening, the socket connection will send a message when switch to a new song.
