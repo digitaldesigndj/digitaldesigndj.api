@@ -2,8 +2,13 @@
 
 Welcome,
 
-This application polls LastFM every 5s and stores the result. If the currently playing song has changed, or the total play count increases, the data is sent to connected clients via socket io. The current dataset is also provided when a new connection is established.
+### What is it?
 
+I am scrobbling my Spotify songs played information to LastFm. This little app lets me broadcast changes as they occour (as I listen to songs). Eventually these broadcasts will be consumed by digitaldesigndj.com.
+
+### A more techninal explination
+
+This application polls LastFM every 5s and stores the result. If the currently playing song has changed, or the total play count increases, the data is sent to connected clients via socket io. The current dataset is also provided when a new connection is established.
 
 ### How to make it go:
 
