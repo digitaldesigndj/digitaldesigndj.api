@@ -1,16 +1,22 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-$(function(){
-	var socket     = io.connect('http://192.168.0.7:9779');
-	var text_field = $('#text').select();
-	var lastentry  = "";
-	text_field.keyup(function(event) {
-		if( text_field.val() != lastentry ) {
-			socket.emit('senttext', text_field.val() );
-		}
+// $(function(){
+// 	var socket     = io.connect('http://192.168.0.7:9779');
+// 	var text_field = $('#text').select();
+// 	var lastentry  = "";
+// 	text_field.keyup(function(event) {
+// 		if( text_field.val() != lastentry ) {
+// 			socket.emit('senttext', text_field.val() );
+// 		}
+// 	});
+// });
+</script>
+<script>
+	var socket = io.connect('http://localhost:9779');
+	socket.on('news', function (data) {
+		console.log(data);
 	});
-});
 </script>
 The Voice of Taylor: 
 <input id="text" value="" />

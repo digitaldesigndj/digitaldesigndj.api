@@ -10,6 +10,10 @@ This app should poll lastfm every min and recieve a json array. When new clients
 
 The current widget system on digitaldesigndj.com polls from the client side, if I got a rush of traffic, I would hit the rate limit for github and lastfm (Each client making thier own request.)
 
+### Post build
+
+The application polls LastFM every 5s and stores the result. If the currently playing song has changed, or the total play cound increases, the new data is send out via socket io. The current dataset is provided to anyone who connects to the server when the connection is established.
+
 <!-- 
 ### Client Side
 
