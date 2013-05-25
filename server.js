@@ -12,6 +12,7 @@ var app              = require('express')()
 	, lastfm_api_key = 'c7b66efb5c1869ed420b3275da989fab';
 
 server.listen(9779);
+io.set( 'resource', '/api/socket.io' );
 
 app.get('/', function (req, res) {
 	res.sendfile(__dirname + '/index.html');
@@ -27,15 +28,14 @@ function pollLastFm(){
 			if( total !== api_total ){
 				total = api_total;
 				current_track = data.recenttracks.track[0].name;
-				io.sockets.emit('news', data );
+				io.of('/api').emit('update', data );
 				console.log( 'new played song' );
-			}else{
-				console.log( data.recenttracks.track[0].name );
-				if( data.recenttracks.track[0]['@attr'].nowplaying ) {
+			} else {
+				if( data.recenttracks.track[0]['@attr'].nowplaying ) { // Current Listenting
 					var api_current_track = data.recenttracks.track[0].name;
 					if( current_track !== api_current_track ){
 						current_track = api_current_track;
-						io.sockets.emit('news', data );
+						io.of('/api').emit('update', data );
 						console.log( 'newsong' );
 					}
 				}
@@ -50,6 +50,10 @@ new cronJob('*/5 * * * * *', function(){
 	pollLastFm();
 }, null, true);
 
-io.sockets.on('connection', function (socket) {
-	socket.emit('news', lastfm);
+io.of('/api').on('connection', function (socket) {
+	// if the service restarts, the (re)connection happens before the lastfm
+	// data is in. This prevents sending an empty obejct to clients.
+	if( !$.isEmptyObject( lastfm ) ) { 
+		socket.emit('update', lastfm);
+	}
 });
