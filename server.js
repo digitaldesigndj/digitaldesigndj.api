@@ -11,7 +11,7 @@ var app              = require('express')()
 	, username       = "DigitalDesignDj"
 	, lastfm_api_key = 'c7b66efb5c1869ed420b3275da989fab';
 
-server.listen(9779);
+server.listen(8880);
 io.set( 'resource', '/api/socket.io' );
 
 app.get('/', function (req, res) {
