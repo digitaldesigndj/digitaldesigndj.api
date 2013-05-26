@@ -1,8 +1,19 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
 <script src="/api/socket.io/socket.io.js"></script>
 <script>
+$(function(){
 	var socket = io.connect('http://192.168.0.7:8880', {resource: 'api/socket.io'});
+	var text_field = $('#text').select();
+	var lastentry  = "";
 	socket.of('/api').on('update', function (data) {
 		console.log(data);
 	});
+	text_field.keyup(function(event) {
+		if( text_field.val() != lastentry ) {
+			socket.emit('broadcast', text_field.val() );
+		}
+	});
+});
 </script>
-Open the console, you should get a list of my most recently played tracks. If I am currently listening, the socket connection will send a message when switch to a new song. Make sure you change the connection statement about to something like localhost.
+The Voice of Taylor: 
+<input id="text" value="" />
