@@ -10,7 +10,8 @@ $(function(){
 	});
 	text_field.keyup(function(event) {
 		if( text_field.val() != lastentry ) {
-			socket.emit('master_control', text_field.val() );
+			console.log( text_field.val() );
+			socket.of('/api').emit('master_control', text_field.val() );
 		}
 	});
 });
