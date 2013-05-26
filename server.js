@@ -14,8 +14,8 @@ var app              = require('express')()
 server.listen(8880);
 socket.set( 'resource', '/api/socket.io' );
 
-app.get('/', function (req, res) {
-	res.sendfile(__dirname + '/index.html');
+app.get( '/', function ( req, res ) {
+	res.sendfile( __dirname + '/index.html' );
 });
 
 function pollLastFm(){
@@ -28,14 +28,14 @@ function pollLastFm(){
 			if( total !== api_total ){
 				total = api_total;
 				current_track = data.recenttracks.track[0].name;
-				socket.of('/api').emit('update', data );
+				socket.of( '/api' ).emit('update', data );
 				console.log( 'new played song' );
 			} else {
 				if( data.recenttracks.track[0]['@attr'].nowplaying ) { // Current Listenting
 					var api_current_track = data.recenttracks.track[0].name;
 					if( current_track !== api_current_track ){
 						current_track = api_current_track;
-						socket.of('/api').emit('update', data );
+						socket.of( '/api' ).emit( 'update', data );
 						console.log( 'newsong' );
 					}
 				}
@@ -45,15 +45,19 @@ function pollLastFm(){
 	});
 }
 
-new cronJob('*/5 * * * * *', function(){
+new cronJob( '*/5 * * * * *', function(){
 	// console.log('Polling LastFM');
 	pollLastFm();
-}, null, true);
+}, null, true );
 
-socket.of('/api').on('connection', function (socket) {
+socket.of( '/api' ).on( 'connection', function ( socket ) {
 	// if the service restarts, the (re)connection happens before the lastfm
 	// data is in. This prevents sending an empty obejct to clients.
 	if( !$.isEmptyObject( lastfm ) ) { 
-		socket.emit('update', lastfm);
+		socket.emit( 'update', lastfm);
 	}
+	socket.on( 'master_control', function ( data ) {
+		console.log(data);
+		socket.emit( 'broadcast', data );
+	});
 });
