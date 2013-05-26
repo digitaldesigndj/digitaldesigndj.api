@@ -58,6 +58,6 @@ socket.of( '/api' ).on( 'connection', function ( socket ) {
 	}
 	socket.on( 'master_control', function ( data ) {
 		console.log(data);
-		socket.emit( 'broadcast', data );
+		socket.broadcast.emit( 'broadcast', data );
 	});
 });
