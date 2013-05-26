@@ -6,7 +6,7 @@ echo __ stopping server.js via forever
 forever stop server.js
 echo __ getting latest commits
 git pull origin master
-echo __ installing dependancies
+echo __ installing dependencies
 npm install
 echo __ starting server.js with forever
 forever start server.js
