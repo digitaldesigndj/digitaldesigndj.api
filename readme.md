@@ -4,11 +4,15 @@ Welcome,
 
 ### What is it?
 
+It snorks up a JSON LastFm feed and outputs the information on a WebSocket.
+
 I am scrobbling my Spotify songs played information to LastFm. This little app lets me broadcast changes as they occour (as I listen to songs). Eventually these broadcasts will be consumed by digitaldesigndj.com.
 
 ### A more techninal explination
 
 This application polls LastFM every 5s and stores the result. If the currently playing song has changed, or the total play count increases, the data is sent to connected clients via socket io. The current dataset is also provided when a new connection is established.
+
+It is an API, but its just a private one that serves up lastfm data. (It can also parse and cache the data recieved). It also demonstrates how a dynamic service can be consumed by static website. Now there are 2 servers to look after, but platform as a service providers are pretty good at that.
 
 ### How to make it go:
 
@@ -34,6 +38,35 @@ You will need [NodeJs](http://nodejs.org/download/)
 
 	`http://localhost:9779`
 
+
+### Webserver Config
+
+It took some special configuration to comply with the same origin policy when it came time to use things live.
+
+Using nginx:
+
+	server {
+		listen   80; ## listen for ipv4; this line is default and implied
+		# listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
+
+		# root /home/pi/www;
+		root /home/pi/digitaldesigndj.com/out;
+		index index.html index.htm;
+
+		# Make site accessible from http://localhost/
+		server_name localhost;
+
+		# ! This is the interesting part, currently the site and api are hosted on the same server, hence localhost.
+		location /api/ {
+				proxy_pass http://localhost:8880;
+				proxy_http_version 1.1;
+				proxy_set_header Upgrade $http_upgrade;
+				proxy_set_header Connection "upgrade";
+		}
+
+		error_page 404 /404.html;
+
+	}
 
 <!-- ### Purpose of appilication
 
@@ -130,31 +163,5 @@ clientio.of('/api').on('connection', function (socket) {
 });
 ```
 
-### Webserver Config
 
-It took some special configuration to comply with the same origin policy when it came time to test things live.
-
-Using nginx:
-
-	server {
-		listen   80; ## listen for ipv4; this line is default and implied
-		# listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
-
-		# root /home/pi/www;
-		root /home/pi/digitaldesigndj.com/out;
-		index index.html index.htm;
-
-		# Make site accessible from http://localhost/
-		server_name localhost;
-
-		location /api/ {
-				proxy_pass http://localhost:8880;
-				proxy_http_version 1.1;
-				proxy_set_header Upgrade $http_upgrade;
-				proxy_set_header Connection "upgrade";
-		}
-
-		error_page 404 /404.html;
-
-	}
  -->
